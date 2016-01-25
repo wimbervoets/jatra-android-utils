@@ -15,7 +15,7 @@ public final class NumberUtils {
     private static final BigDecimal HUNDRED = new BigDecimal(100).setScale(2);
 
     public static BigDecimal calculateAmountCoefficient(final BigDecimal baseAmount, final BigDecimal coefficient) {
-        Log.d(TAG, "calculateAmountCoefficient(baseAmount" + baseAmount + ", coefficient=" + coefficient + ")");
+        Log.d(TAG, "calculateAmountCoefficient(baseAmount=" + baseAmount + ", coefficient=" + coefficient + ")");
         final BigDecimal amount = baseAmount.multiply(coefficient).divide(HUNDRED);
         Log.d(TAG, "calculatedAmount=" + amount);
         return amount;

@@ -9,12 +9,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Date;
 
-import static be.jatra.android.util.lang.DateUtils.formatDate;
-import static be.jatra.android.util.lang.DateUtils.parseDate;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 
@@ -22,8 +20,8 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 //https://github.com/jayway/powermock/wiki/GettingStarted
 //http://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito
 
-@RunWith( PowerMockRunner.class )
-@PrepareForTest( Log.class )
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Log.class)
 public class DateUtilsTest {
 
     @Test
@@ -125,14 +123,14 @@ public class DateUtilsTest {
         assertNull(actualParsedDate);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void parseDate_StringString_pattern_null() {
         mockStatic(Log.class);
         final String date = "4 January 2016";
         DateUtils.parseDate(date, null);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void parseDate_StringString_pattern_empty() {
         mockStatic(Log.class);
         final String date = "4 January 2016";
