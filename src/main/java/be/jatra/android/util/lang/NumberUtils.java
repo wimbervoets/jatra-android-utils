@@ -1,6 +1,7 @@
 package be.jatra.android.util.lang;
 
-import android.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -10,28 +11,26 @@ import static java.math.BigDecimal.ROUND_HALF_UP;
 
 public final class NumberUtils {
 
-    private static final String TAG = NumberUtils.class.getSimpleName();
-
-    private static final BigDecimal HUNDRED = new BigDecimal(100).setScale(2);
-
-    public static BigDecimal calculateAmountCoefficient(final BigDecimal baseAmount, final BigDecimal coefficient) {
-        Log.d(TAG, "calculateAmountCoefficient(baseAmount=" + baseAmount + ", coefficient=" + coefficient + ")");
-        final BigDecimal amount = baseAmount.multiply(coefficient).divide(HUNDRED);
-        Log.d(TAG, "calculatedAmount=" + amount);
-        return amount;
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(NumberUtils.class);
 
     public static BigDecimal convert(final String amountAsString) {
-        Log.d(TAG, "convert(amountAsString=" + amountAsString + ")");
+        LOGGER.debug("convert(amountAsString={})", amountAsString);
         final DecimalFormat df = new DecimalFormat();
         df.setParseBigDecimal(true);
         BigDecimal amount = BigDecimal.ZERO;
         try {
             amount = (BigDecimal) df.parse(amountAsString);
         } catch (final ParseException e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            LOGGER.error(e.getLocalizedMessage());
         }
-        Log.d(TAG, "amount=" + amount);
+        LOGGER.debug("amount={}", amount);
         return amount.setScale(2, ROUND_HALF_UP);
+    }
+
+    public static BigDecimal convert(final double value) {
+        LOGGER.debug("convert(value={})", value);
+        final BigDecimal convertedValue = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP);
+        LOGGER.debug("convertedValue={}", convertedValue);
+        return convertedValue;
     }
 }

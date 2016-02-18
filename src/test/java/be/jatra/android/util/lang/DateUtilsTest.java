@@ -48,10 +48,10 @@ public class DateUtilsTest {
         final Date date = new Date();
         final String actualFormattedDate = DateUtils.formatDate(date);
         System.out.println("formatDate_OK-actualFormattedDate=" + actualFormattedDate);//4/01/16 13:26
-//        Log.d(TAG, "formatDate(date=" + date + ")");
+//        LOGGER.debug( "formatDate(date=" + date + ")");
 //        SimpleDateFormat sdf = new SimpleDateFormat();
 //        final String formattedDate = sdf.format(date);
-//        Log.d(TAG, "formattedDate=" + formattedDate);
+//        LOGGER.debug( "formattedDate=" + formattedDate);
 //        return formattedDate;
     }
 
@@ -63,7 +63,7 @@ public class DateUtilsTest {
         System.out.println("formatDate_intintint_OK-actualFormattedDate=" + actualFormattedDate);//4/01/16 13:26
         //final int year, final int monthOfYear, final int dayOfMonth
 //        final String date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-//        Log.d(TAG, "date=" + date);
+//        LOGGER.debug( "date=" + date);
 //        return date;
     }
 
@@ -102,7 +102,7 @@ public class DateUtilsTest {
 //        try {
 //            date = new SimpleDateFormat().parse(dateAsString);
 //        } catch (final ParseException e) {
-//            Log.e(TAG, "The given date could not be parsed.");
+//            LOGGER.error( "The given date could not be parsed.");
 //        }
 //        return date;
     }
@@ -153,7 +153,7 @@ public class DateUtilsTest {
         System.out.println("mergeDateAndTime_DateDate_OK-actualDate=" + actualDate);//Mon Jan 04 13:26:29 CET 2016
 
         //final Date date, final Date time
-//        Log.d(TAG, "mergeDateAndTime(date=" + date + ", time=" + time + ")");
+//        LOGGER.debug( "mergeDateAndTime(date=" + date + ", time=" + time + ")");
 //        Calendar cDate = new GregorianCalendar();
 //        if (date != null) {
 //            cDate.setTime(date);
