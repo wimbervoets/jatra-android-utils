@@ -1,7 +1,7 @@
 package be.jatra.android.util.lang;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,10 +9,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-@SuppressLint("SimpleDateFormat")
 public final class DateUtils {
 
-    private static final String TAG = DateUtils.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
 
     public static String formatCurrentDate() {
         return formatDate(getCurrentDate());
@@ -21,13 +20,13 @@ public final class DateUtils {
     public static String formatDate(final Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat();
         final String formattedDate = sdf.format(date);
-        Log.d(TAG, "formatDate(date) - formattedDate=" + formattedDate);
+        LOGGER.debug("formatDate(date) - formattedDate={}", formattedDate);
         return formattedDate;
     }
 
     public static String formatDate(final int year, final int monthOfYear, final int dayOfMonth) {
         final String date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-        Log.d(TAG, "formatDate(int, int, int) - date=" + date);
+        LOGGER.debug("formatDate(int, int, int) - date={}", date);
         return date;
     }
 
@@ -35,7 +34,7 @@ public final class DateUtils {
         final String time = "" + hourOfDay + ":" +
                 ((minute <= 9) ? "0" + minute : minute) + ":" +
                 ((second <= 9) ? "0" + second : second);
-        Log.d(TAG, "formatTime(int, int, int) - time=" + time);
+        LOGGER.debug("formatTime(int, int, int) - time={}", time);
         return time;
     }
 
@@ -45,7 +44,7 @@ public final class DateUtils {
     }
 
     public static Date parseDate(final String dateAsString) {
-        Log.d(TAG, "parseDate(dateAsString=" + dateAsString + ")");
+        LOGGER.debug("parseDate(dateAsString={})", dateAsString);
         if (null == dateAsString) {
             return null;
         }
@@ -54,13 +53,13 @@ public final class DateUtils {
         try {
             date = new SimpleDateFormat().parse(dateAsString);
         } catch (final ParseException e) {
-            Log.e(TAG, "The given date could not be parsed.");
+            LOGGER.error("The given date could not be parsed.");
         }
         return date;
     }
 
     public static Date parseDate(final String dateAsString, final String pattern) {
-        Log.d(TAG, "parseDate(dateAsString=" + dateAsString + ", pattern=" + pattern + ")");
+        LOGGER.debug("parseDate(dateAsString={}, pattern={})", dateAsString, pattern);
         if (null == dateAsString) {
             return null;
         }
@@ -72,7 +71,7 @@ public final class DateUtils {
         try {
             date = new SimpleDateFormat(pattern).parse(dateAsString);
         } catch (final ParseException e) {
-            Log.e(TAG, "The given date could not be parsed.");
+            LOGGER.error("The given date could not be parsed.");
         }
         return date;
     }
@@ -82,7 +81,7 @@ public final class DateUtils {
     }
 
     public static Date mergeDateAndTime(final Date date, final Date time) {
-        Log.d(TAG, "mergeDateAndTime(date=" + date + ", time=" + time + ")");
+        LOGGER.debug("mergeDateAndTime(date=" + date + ", time=" + time + ")");
         Calendar cDate = new GregorianCalendar();
         if (date != null) {
             cDate.setTime(date);
