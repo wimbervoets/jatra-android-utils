@@ -15,6 +15,7 @@ public final class MapUtils {
         }
         return newMap;
     }
+<<<<<<< HEAD
 
     public static Map.Entry<Long, BigDecimal> getMinEntry(final Map<Long, BigDecimal> map) {
         Map.Entry<Long, BigDecimal> minEntry = null;
@@ -36,3 +37,6 @@ public final class MapUtils {
         return maxEntry;
     }
 }
+=======
+}
+>>>>>>> a707a62f3277ec70f99b6bcd8742e26c6961822e

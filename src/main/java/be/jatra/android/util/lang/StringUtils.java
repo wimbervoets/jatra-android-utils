@@ -17,11 +17,17 @@ public final class StringUtils {
 
     public static final String SPACE = " ";
 
+<<<<<<< HEAD
     public static final String SQUARE_BRACKET_OPEN = "[";
 
     public static final String SQUARE_BRACKET_CLOSED = "]";
 
     public static final String SEMI_COLON = ";";
+=======
+    private static final String SQUARE_BRACKET_OPEN = "[";
+
+    private static final String SQUARE_BRACKET_CLOSED = "]";
+>>>>>>> a707a62f3277ec70f99b6bcd8742e26c6961822e
 
     public static String stripBrackets(final List list) {
         if (null == list) {

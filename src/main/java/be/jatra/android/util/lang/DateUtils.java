@@ -1,5 +1,10 @@
 package be.jatra.android.util.lang;
 
+<<<<<<< HEAD
+=======
+import android.annotation.SuppressLint;
+
+>>>>>>> a707a62f3277ec70f99b6bcd8742e26c6961822e
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
