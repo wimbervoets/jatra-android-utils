@@ -1,8 +1,5 @@
 package be.jatra.android.util;
 
-/**
- * Created by wim on 28/01/16.
- */
 public class GlobalConstants {
     /***
      * Use API_OUTPUT_STATUS_CODE and API_OUTPUT_STATUS_LINE
@@ -60,7 +57,7 @@ public class GlobalConstants {
     public static final String KEY_LOCATION = "location";
     public static final String KEY_ANSWER = "answer";
     public static final String KEY_NEXT = "next";
-    public static final String KEY_KEY = "key";
+    public static final String KEY_KEY = "pageKey";
     public static final String KEY_VALUE = "value";
     public static final String KEY_PARENT = "parent";
     public static final String KEY_SUBSCRIPTIONS = "subscriptions";

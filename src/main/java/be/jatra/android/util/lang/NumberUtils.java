@@ -20,13 +20,8 @@ public final class NumberUtils {
         df.setParseBigDecimal(true);
         BigDecimal amount = BigDecimal.ZERO;
         try {
-<<<<<<< HEAD
             amount = new BigDecimal(amountAsString).setScale(2, ROUND_HALF_UP);
         } catch (final NumberFormatException e) {
-=======
-            amount = (BigDecimal) df.parse(amountAsString);
-        } catch (final ParseException e) {
->>>>>>> a707a62f3277ec70f99b6bcd8742e26c6961822e
             LOGGER.error(e.getLocalizedMessage());
         }
         LOGGER.debug("amount={}", amount);
@@ -39,7 +34,6 @@ public final class NumberUtils {
         LOGGER.debug("convertedValue={}", convertedValue);
         return convertedValue;
     }
-<<<<<<< HEAD
 
     public static List<BigDecimal> convert(final List<String> amountsAsString) {
         final List<BigDecimal> amounts = new ArrayList<>();
@@ -48,6 +42,15 @@ public final class NumberUtils {
         }
         return amounts;
     }
-=======
->>>>>>> a707a62f3277ec70f99b6bcd8742e26c6961822e
+
+    public static String formatAmount(final double amount) {
+        LOGGER.debug("formatAmount(amount={})", amount);
+        String formattedAmount = String.format("%.2f", amount);
+        LOGGER.debug("formattedAmount={}", formattedAmount);
+        return formattedAmount;
+    }
+
+    public static String formatAmount(final BigDecimal amount) {
+        return formatAmount(amount.doubleValue());
+    }
 }

@@ -1,34 +1,88 @@
 package be.jatra.android.util;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.ContactsContract;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 
-/*import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;*/
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-/**
- * Provides convenience methods and abstractions to some tasks in Android
- * <p>
- * <br/>
- * <br/>
- *
- * @author Jay
- *         **
- */
+@SuppressLint("NewApi")
 public class Utils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
 
-    @Deprecated
-    protected static Context mContext;
+//    @Deprecated
+//    protected static Context mContext;
+//
+//    static ProgressDialog mProgressDialog;
 
-    static ProgressDialog mProgressDialog;
+    public static boolean hasHoneycomb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    public static boolean hasHoneycombMR1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
+    }
+
+    public static boolean hasICS() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+    }
+
+    public static boolean hasJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    public static boolean hasLollipop() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static void setLayerTypeCompat(View view, int layerType) {
+        if (hasHoneycomb()) {
+            view.setLayerType(layerType, null);
+        }
+    }
+
+    public static void setBackgroundCompat(View view, Drawable drawable) {
+        if (hasJellyBean()) {
+            view.setBackground(drawable);
+        } else {
+            view.setBackgroundDrawable(drawable);
+        }
+    }
+
+    public static void setStatusBarColorCompat(Window window, int color) {
+        if (hasLollipop()) {
+            window.setStatusBarColor(color);
+        }
+    }
+
+    public static void removeOnGlobalLayoutListenerCompat(View view, ViewTreeObserver.OnGlobalLayoutListener listener) {
+        if (hasJellyBean()) {
+            view.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+        } else {
+            view.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+        }
+    }
 
     /**
      * Checks if the Internet connection is available.
@@ -43,11 +97,111 @@ public class Utils {
 
         // if network is NOT available networkInfo will be null
         // otherwise check if we are connected
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
+        return networkInfo != null && networkInfo.isConnected();
+
+    }
+
+    /**
+     * Gets the preferred height for each item in the ListView, in pixels, after accounting for
+     * screen density. ImageLoader uses this value to resize thumbnail images to match the ListView
+     * item height.
+     * @param activity
+     * @return The preferred height in pixels, based on the current theme.
+     */
+    public static int getListPreferredItemHeight(final Activity activity) {
+        final TypedValue typedValue = new TypedValue();
+
+        // Resolve list item preferred height theme attribute into typedValue
+        activity.getTheme().resolveAttribute(
+                android.R.attr.listPreferredItemHeight, typedValue, true);
+
+        // Create a new DisplayMetrics object
+        final DisplayMetrics metrics = new android.util.DisplayMetrics();
+
+        // Populate the DisplayMetrics
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        // Return theme value based on DisplayMetrics
+        return (int) typedValue.getDimension(metrics);
+    }
+
+    /**
+     * Decodes and scales a contact's image from a file pointed to by a Uri in the contact's data,
+     * and returns the result as a Bitmap. The column that contains the Uri varies according to the
+     * platform version.
+     *
+     * @param activity activity
+     * @param photoData For platforms prior to Android 3.0, provide the Contact._ID column value.
+     *                  For Android 3.0 and later, provide the Contact.PHOTO_THUMBNAIL_URI value.
+     * @param imageSize The desired target width and height of the output image in pixels.
+     * @return A Bitmap containing the contact's image, resized to fit the provided image size. If
+     * no thumbnail exists, returns null.
+     */
+    public static Bitmap loadContactPhotoThumbnail(final Activity activity, final String photoData, final int imageSize) {
+
+        // Ensures the Fragment is still added to an activity. As this method is called in a
+        // background thread, there's the possibility the Fragment is no longer attached and
+        // added to an activity. If so, no need to spend resources loading the contact photo.
+        if (activity == null) {
+            return null;
         }
 
-        return false;
+        // Instantiates an AssetFileDescriptor. Given a content Uri pointing to an image file, the
+        // ContentResolver can return an AssetFileDescriptor for the file.
+        AssetFileDescriptor afd = null;
+
+        // This "try" block catches an Exception if the file descriptor returned from the Contacts
+        // Provider doesn't point to an existing file.
+        try {
+            Uri thumbUri;
+            // If Android 3.0 or later, converts the Uri passed as a string to a Uri object.
+            if (Utils.hasHoneycomb()) {
+                thumbUri = Uri.parse(photoData);
+            } else {
+                // For versions prior to Android 3.0, appends the string argument to the content
+                // Uri for the Contacts table.
+                final Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, photoData);
+
+                // Appends the content Uri for the Contacts.Photo table to the previously
+                // constructed contact Uri to yield a content URI for the thumbnail image
+                thumbUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+            }
+            // Retrieves a file descriptor from the Contacts Provider. To learn more about this
+            // feature, read the reference documentation for
+            // ContentResolver#openAssetFileDescriptor.
+            afd = activity.getContentResolver().openAssetFileDescriptor(thumbUri, "r");
+
+            // Gets a FileDescriptor from the AssetFileDescriptor. A BitmapFactory object can
+            // decode the contents of a file pointed to by a FileDescriptor into a Bitmap.
+            FileDescriptor fileDescriptor = afd.getFileDescriptor();
+
+            if (fileDescriptor != null) {
+                // Decodes a Bitmap from the image pointed to by the FileDescriptor, and scales it
+                // to the specified width and height
+                return ImageLoader.decodeSampledBitmapFromDescriptor(
+                        fileDescriptor, imageSize, imageSize);
+            }
+        } catch (FileNotFoundException e) {
+            // If the file pointed to by the thumbnail URI doesn't exist, or the file can't be
+            // opened in "read" mode, ContentResolver.openAssetFileDescriptor throws a
+            // FileNotFoundException.
+            if (BuildConfig.DEBUG) {
+                LOGGER.debug("Contact photo thumbnail not found for contact {}: {}", photoData, e.toString());
+            }
+        } finally {
+            // If an AssetFileDescriptor was returned, try to close it
+            if (afd != null) {
+                try {
+                    afd.close();
+                } catch (IOException e) {
+                    // Closing a file descriptor might cause an IOException if the file is
+                    // already closed. Nothing extra is needed to handle this.
+                }
+            }
+        }
+
+        // If the decoding failed, returns null
+        return null;
     }
 
 //    /**
@@ -2076,7 +2230,7 @@ public class Utils {
 //        ArrayList<KeyValueTuple> list = null;
 //
 //        if (keyValueArray == null) {
-//            throw new NullPointerException("key-values array cannot be null");
+//            throw new NullPointerException("pageKey-values array cannot be null");
 //        }
 //
 //        if (keyValueArray.length() > 0) {
@@ -2085,7 +2239,7 @@ public class Utils {
 //
 //        for (int i = 0; i < keyValueArray.length(); i++) {
 //            JSONObject obj = null;
-//            String key = null;
+//            String pageKey = null;
 //            String value = null;
 //
 //            try {
@@ -2099,9 +2253,9 @@ public class Utils {
 //            }
 //
 //            try {
-//                key = obj.getString(GlobalConstants.KEY_KEY);
+//                pageKey = obj.getString(GlobalConstants.KEY_KEY);
 //                value = obj.getString(GlobalConstants.KEY_VALUE);
-//                list.add(new KeyValueTuple(key, value));
+//                list.add(new KeyValueTuple(pageKey, value));
 //            } catch (JSONException e) {
 //                e.printStackTrace();
 //            } catch (Exception e) {
@@ -2215,10 +2369,10 @@ public class Utils {
 //    }
 //
 //	/*
-//     * public static String getHash(String value, String key) throws
+//     * public static String getHash(String value, String pageKey) throws
 //	 * UnsupportedEncodingException, NoSuchAlgorithmException,
 //	 * InvalidKeyException { String type = "HmacSHA1"; SecretKeySpec secret =
-//	 * new SecretKeySpec(key.getBytes(), type); Mac mac = Mac.getInstance(type);
+//	 * new SecretKeySpec(pageKey.getBytes(), type); Mac mac = Mac.getInstance(type);
 //	 * mac.init(secret); byte[] bytes = mac.doFinal(value.getBytes()); return
 //	 * bytesToHex(bytes); }
 //	 *

@@ -17,17 +17,29 @@ public final class StringUtils {
 
     public static final String SPACE = " ";
 
-<<<<<<< HEAD
     public static final String SQUARE_BRACKET_OPEN = "[";
 
     public static final String SQUARE_BRACKET_CLOSED = "]";
 
     public static final String SEMI_COLON = ";";
-=======
-    private static final String SQUARE_BRACKET_OPEN = "[";
 
-    private static final String SQUARE_BRACKET_CLOSED = "]";
->>>>>>> a707a62f3277ec70f99b6bcd8742e26c6961822e
+    public static final String DASH = "-";
+
+    public static final String DOT = ".";
+
+    public static final String COMMA = ",";
+
+    public static final String RQUO = ">>";
+
+    public static final String DECIMAL_SEPARATOR = DOT;
+
+    public static final String THOUSANDS_SEPARATOR = COMMA;
+
+    public static final String PIPE = "|";
+
+    public static final String NEW_LINE = "\n";
+
+    public static final String UNDERSCORE = "_";
 
     public static String stripBrackets(final List list) {
         if (null == list) {
@@ -41,13 +53,6 @@ public final class StringUtils {
             return EMPTY_STRING;
         }
         return string.replace(SQUARE_BRACKET_OPEN, EMPTY_STRING).replace(SQUARE_BRACKET_CLOSED, EMPTY_STRING);
-    }
-
-    public static String formatAmount(final double amount) {
-        LOGGER.debug("formatAmount(amount={})", amount);
-        String formattedAmount = String.format("%.2f", amount);
-        LOGGER.debug("formattedAmount={}", formattedAmount);
-        return formattedAmount;
     }
 
     public static String toCamelCase(final String s) {
