@@ -56,12 +56,12 @@ public final class StringUtils {
     }
 
     public static String toCamelCase(final String s) {
-        if (null == s || "".equals(s)) {
+        if (null == s || EMPTY_STRING.equals(s)) {
             return null;
         }
 
-        String[] parts = s.split("_");
-        String camelCaseString = "";
+        String[] parts = s.split(UNDERSCORE);
+        String camelCaseString = EMPTY_STRING;
         for (String part : parts) {
             camelCaseString = camelCaseString + toProperCase(part);
         }

@@ -15,7 +15,6 @@ public final class NumberUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(NumberUtils.class);
 
     public static BigDecimal convert(final String amountAsString) {
-        LOGGER.debug("convert(amountAsString={})", amountAsString);
         final DecimalFormat df = new DecimalFormat();
         df.setParseBigDecimal(true);
         BigDecimal amount = BigDecimal.ZERO;
@@ -24,14 +23,13 @@ public final class NumberUtils {
         } catch (final NumberFormatException e) {
             LOGGER.error(e.getLocalizedMessage());
         }
-        LOGGER.debug("amount={}", amount);
+        LOGGER.debug("convert(amountAsString={}) - amount={}", amountAsString, amount);
         return amount.setScale(2, ROUND_HALF_UP);
     }
 
     public static BigDecimal convert(final double value) {
-        LOGGER.debug("convert(value={})", value);
         final BigDecimal convertedValue = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP);
-        LOGGER.debug("convertedValue={}", convertedValue);
+        LOGGER.debug("convert(value={}) - convertedValue={}", value, convertedValue);
         return convertedValue;
     }
 
@@ -44,9 +42,8 @@ public final class NumberUtils {
     }
 
     public static String formatAmount(final double amount) {
-        LOGGER.debug("formatAmount(amount={})", amount);
         String formattedAmount = String.format("%.2f", amount);
-        LOGGER.debug("formattedAmount={}", formattedAmount);
+        LOGGER.debug("formatAmount(amount={}) - formattedAmount={}", amount, formattedAmount);
         return formattedAmount;
     }
 
