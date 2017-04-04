@@ -12,7 +12,7 @@ public final class Version {
         this(value, buildNumber, null);
     }
 
-    public Version(final String value, final Integer buildNumber, String codeName) {
+    public Version(final String value, final Integer buildNumber, final String codeName) {
         this.value = value;
         this.buildNumber = buildNumber;
         this.codeName = codeName;

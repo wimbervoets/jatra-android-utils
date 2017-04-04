@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -15,6 +18,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,9 +27,14 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+
+import static android.graphics.Bitmap.Config.*;
 
 @SuppressLint("NewApi")
 public class Utils {
@@ -260,76 +270,76 @@ public class Utils {
 //
 //        builder.show();
 //    }
-//
-//    /**
-//     * Serializes the Bitmap to Base64
-//     *
-//     * @return Base64 string value of a {@linkplain android.graphics.Bitmap} passed in as a parameter
-//     * @throws NullPointerException If the parameter bitmap is null.
-//     *                              **
-//     */
-//    public static String toBase64(Bitmap bitmap) {
-//
-//        if (bitmap == null) {
-//            throw new NullPointerException("Bitmap cannot be null");
-//        }
-//
-//        String base64Bitmap = null;
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        byte[] imageBitmap = stream.toByteArray();
-//        base64Bitmap = Base64.encodeToString(imageBitmap, Base64.DEFAULT);
-//
-//        return base64Bitmap;
-//    }
-//
-//    /**
-//     * Converts the passed in drawable to Bitmap representation
-//     *
-//     * @throws NullPointerException If the parameter drawable is null.
-//     *                              **
-//     */
-//    public static Bitmap drawableToBitmap(Drawable drawable) {
-//
-//        if (drawable == null) {
-//            throw new NullPointerException("Drawable to convert should NOT be null");
-//        }
-//
-//        if (drawable instanceof BitmapDrawable) {
-//            return ((BitmapDrawable) drawable).getBitmap();
-//        }
-//
-//        if (drawable.getIntrinsicWidth() <= 0 && drawable.getIntrinsicHeight() <= 0) {
-//            return null;
-//        }
-//
-//        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
-//        Canvas canvas = new Canvas(bitmap);
-//        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-//        drawable.draw(canvas);
-//
-//        return bitmap;
-//    }
-//
-//    /**
-//     * Converts the given bitmap to {@linkplain java.io.InputStream}.
-//     *
-//     * @throws NullPointerException If the parameter bitmap is null.
-//     *                              **
-//     */
-//    public static InputStream bitmapToInputStream(Bitmap bitmap) throws NullPointerException {
-//
-//        if (bitmap == null) {
-//            throw new NullPointerException("Bitmap cannot be null");
-//        }
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        InputStream inputstream = new ByteArrayInputStream(baos.toByteArray());
-//
-//        return inputstream;
-//    }
-//
+
+    /**
+     * Serializes the Bitmap to Base64
+     *
+     * @return Base64 string value of a {@linkplain android.graphics.Bitmap} passed in as a parameter
+     * @throws NullPointerException If the parameter bitmap is null.
+     *                              **
+     */
+    public static String toBase64(Bitmap bitmap) {
+
+        if (bitmap == null) {
+            throw new NullPointerException("Bitmap cannot be null");
+        }
+
+        String base64Bitmap = null;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] imageBitmap = stream.toByteArray();
+        base64Bitmap = Base64.encodeToString(imageBitmap, Base64.DEFAULT);
+
+        return base64Bitmap;
+    }
+
+    /**
+     * Converts the passed in drawable to Bitmap representation
+     *
+     * @throws NullPointerException If the parameter drawable is null.
+     *                              **
+     */
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+
+        if (drawable == null) {
+            throw new NullPointerException("Drawable to convert should NOT be null");
+        }
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 && drawable.getIntrinsicHeight() <= 0) {
+            return null;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
+    /**
+     * Converts the given bitmap to {@linkplain java.io.InputStream}.
+     *
+     * @throws NullPointerException If the parameter bitmap is null.
+     *                              **
+     */
+    public static InputStream bitmapToInputStream(Bitmap bitmap) throws NullPointerException {
+
+        if (bitmap == null) {
+            throw new NullPointerException("Bitmap cannot be null");
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        InputStream inputstream = new ByteArrayInputStream(baos.toByteArray());
+
+        return inputstream;
+    }
+
 //    /**
 //     * Shows a progress dialog with a spinning animation in it. This method must preferably called
 //     * from a UI thread.
@@ -579,29 +589,6 @@ public class Utils {
 //     * @param dialogClickListener For e.g.
 //     *                            <p/>
 //     *                            <pre>
-//     *
-//     *
-//     *
-//     *
-//     *
-//     *
-//     *
-//     *
-//     *                                                                                                                                                                                                                                                                                                                                                                                           DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//     *
-//     *                                                                                                                                                                                                                                                                                                                                                                                           	public void onClick(DialogInterface dialog, int which) {
-//     *                                                                                                                                                                                                                                                                                                                                                                                           		switch (which) {
-//     *                                                                                                                                                                                                                                                                                                                                                                                           		case DialogInterface.BUTTON_POSITIVE:
-//     *                                                                                                                                                                                                                                                                                                                                                                                           			// Yes button clicked
-//     *                                                                                                                                                                                                                                                                                                                                                                                           			break;
-//     *
-//     *                                                                                                                                                                                                                                                                                                                                                                                           		case DialogInterface.BUTTON_NEGATIVE:
-//     *                                                                                                                                                                                                                                                                                                                                                                                           			// No button clicked
-//     *                                                                                                                                                                                                                                                                                                                                                                                           			break;
-//     *                                                                                                                                                                                                                                                                                                                                                                                           		}
-//     *                                                                                                                                                                                                                                                                                                                                                                                           	}
-//     *                                                                                                                                                                                                                                                                                                                                                                                           };
-//     *                                                                                                                                                                                                                                                                                                                                                                                           </pre>
 //     * @param positiveBtnLabel    For e.g. "Yes"
 //     * @param negativeBtnLabel    For e.g. "No"
 //     *                            **
@@ -650,25 +637,15 @@ public class Utils {
 //
 //        return versionCode;
 //    }
-//
-//    /**
-//     * @deprecated Use {@link #getOsVersion()} instead
-//     * <p/>
-//     * Gets the version number of the Android OS For e.g. 2.3.4 or 4.1.2
-//     * *
-//     */
-//    public static String getOSVersion() {
-//        return Build.VERSION.RELEASE;
-//    }
-//
-//    /**
-//     * Gets the version number of the Android OS For e.g. 2.3.4 or 4.1.2
-//     * *
-//     */
-//    public static String getOsVersion() {
-//        return Build.VERSION.RELEASE;
-//    }
-//
+
+    /**
+     * Gets the version number of the Android OS For e.g. 2.3.4 or 4.1.2
+     * *
+     */
+    public static String getOsVersion() {
+        return Build.VERSION.RELEASE;
+    }
+
 //    /**
 //     * Checks if the service with the given name is currently running on the device.
 //     *
@@ -690,17 +667,17 @@ public class Utils {
 //
 //        return false;
 //    }
-//
-//    /**
-//     * Gets the device unique id called IMEI. Sometimes, this returns 00000000000000000 for the
-//     * rooted devices.
-//     * **
-//     */
-//    public static String getDeviceImei(Context ctx) {
-//        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
-//        return tm.getDeviceId();
-//    }
-//
+
+    /**
+     * Gets the device unique id called IMEI. Sometimes, this returns 00000000000000000 for the
+     * rooted devices.
+     * **
+     */
+    public static String getDeviceImei(Context ctx) {
+        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        return tm.getDeviceId();
+    }
+
 //    /**
 //     * Shares an application over the social network like Facebook, Twitter etc.
 //     *
@@ -886,12 +863,7 @@ public class Utils {
 //
 //    /**
 //     * @param mediaContentUri Content URI pointing to a row of {@link android.provider.MediaStore.Images.Media}
-//     *                        **
 //     * @deprecated Use {@link opensource.Utils#getImagePathForUri(android.content.Context, android.net.Uri)}
-//     * <p/>
-//     * <br/>
-//     * <br/>
-//     * <br/>
 //     * <br/>
 //     * Get the file path from the MediaStore.Images.Media Content URI
 //     */
@@ -920,7 +892,6 @@ public class Utils {
 //
 //    /**
 //     * @param mediaContentUri Media content Uri.
-//     *                        **
 //     * @deprecated Use {@link opensource.Utils#getPathForMediaUri(android.content.Context, android.net.Uri)}
 //     * <p/>
 //     * <br/>
@@ -983,13 +954,13 @@ public class Utils {
 //        return path;
 //    }
 //
-//    public static ArrayList<String> toStringArray(JSONArray jsonArr) {
+//    public static List<String> toStringArray(JSONArray jsonArr) {
 //
 //        if (jsonArr == null || jsonArr.length() == 0) {
 //            return null;
 //        }
 //
-//        ArrayList<String> stringArray = new ArrayList<String>();
+//        List<String> stringArray = new ArrayList<String>();
 //
 //        for (int i = 0, count = jsonArr.length(); i < count; i++) {
 //            try {
