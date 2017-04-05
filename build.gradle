@@ -40,8 +40,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
 
     //analytics
-//    compile 'com.google.android.gms:play-services-analytics:9.8.0'
     compile 'com.google.firebase:firebase-core:9.8.0'
+    compile 'com.google.android.gms:play-services-analytics:9.8.0'
 
     //logging
     compile 'org.slf4j:slf4j-android:1.7.14'

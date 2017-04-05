@@ -7,6 +7,7 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,6 +34,7 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 import static android.graphics.Bitmap.Config.*;
 
@@ -1606,31 +1608,31 @@ public class Utils {
 //
 //        return dayStr;
 //    }
-//
-//    /**
-//     * Gets random color integer
-//     * **
-//     */
-//    public static int getRandomColor() {
-//        Random random = new Random();
-//        int red = random.nextInt(255);
-//        int green = random.nextInt(255);
-//        int blue = random.nextInt(255);
-//
-//        return Color.argb(255, red, green, blue);
-//    }
-//
-//    /**
-//     * *
-//     * Converts a given bitmap to byte array
-//     * **
-//     */
-//    public static byte[] toBytes(Bitmap bmp) {
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        return stream.toByteArray();
-//    }
-//
+
+    /**
+     * Gets random color integer
+     * **
+     */
+    public static int getRandomColor() {
+        Random random = new Random();
+        int red = random.nextInt(255);
+        int green = random.nextInt(255);
+        int blue = random.nextInt(255);
+
+        return Color.argb(255, red, green, blue);
+    }
+
+    /**
+     * *
+     * Converts a given bitmap to byte array
+     * **
+     */
+    public static byte[] toBytes(Bitmap bmp) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
 //    /**
 //     * Resizes an image to the given width and height parameters Prefer using
 //     * {@link opensource.Utils#decodeSampledBitmapFromResource(android.content.Context, android.net.Uri, int, int)} over this method.
