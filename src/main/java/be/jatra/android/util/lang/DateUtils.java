@@ -13,6 +13,14 @@ public final class DateUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
 
+    private static final String EMPTY = "";
+
+    private static final char ZERO = '0';
+
+    private static final char COLON = ':';
+
+    private static final char SLASH = '/';
+
     public static String formatCurrentDate() {
         return formatDate(getCurrentDate());
     }
@@ -29,15 +37,15 @@ public final class DateUtils {
     }
 
     public static String formatDate(final int year, final int monthOfYear, final int dayOfMonth) {
-        final String date = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        final String date = EMPTY + dayOfMonth + SLASH + (monthOfYear + 1) + SLASH + year;
         LOGGER.debug("formatDate(int, int, int) - date={}", date);
         return date;
     }
 
     public static String formatTime(final int hourOfDay, final int minute, final int second) {
-        final String time = "" + hourOfDay + ":" +
-                ((minute <= 9) ? "0" + minute : minute) + ":" +
-                ((second <= 9) ? "0" + second : second);
+        final String time = EMPTY + hourOfDay + COLON +
+                ((minute <= 9) ? ZERO + minute : minute) + COLON +
+                ((second <= 9) ? ZERO + second : second);
         LOGGER.debug("formatTime(int, int, int) - time={}", time);
         return time;
     }
