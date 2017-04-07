@@ -38,8 +38,8 @@ public final class AppUtils {
         return version;
     }
 
-    public static void setLocale(final Resources resources, final String languageCode) {
-        LOGGER.debug("setLocale(Resources, language={})", languageCode);
+    public static void configureLocale(final Resources resources, final String languageCode) {
+        LOGGER.debug("configureLocale(Resources, language={})", languageCode);
         Locale locale = new Locale(languageCode, Locale.getDefault().getCountry());
         Locale.setDefault(locale);
         Configuration config = resources.getConfiguration();

@@ -13,6 +13,8 @@ import be.jatra.android.util.lang.StringUtils;
 
 public final class PrefUtils {
 
+    private static final String DEFAULT_CURRENCY_CODE = "EUR";
+
     /**
      * The placeholder of the app name in the template.
      */
@@ -172,7 +174,7 @@ public final class PrefUtils {
     }
 
     public static String getDefaultCurrencyCode() {
-        String defaultCurrencyCode = "EUR";
+        String defaultCurrencyCode = DEFAULT_CURRENCY_CODE;
         try {
             defaultCurrencyCode = Currency.getInstance(Locale.getDefault()).toString();
         } catch (final IllegalArgumentException e) {
