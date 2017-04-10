@@ -18,16 +18,16 @@ public final class Version {
         this.codeName = codeName;
     }
 
-    public String getName() {
+    public final String getName() {
         return value;
     }
 
-    public Integer getCode() {
+    public final Integer getCode() {
         return buildNumber;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return String.format("%1$sb%2$s (%3$s)", value, buildNumber, codeName);
     }
 }

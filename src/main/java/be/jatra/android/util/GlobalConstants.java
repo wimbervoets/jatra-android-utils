@@ -1,6 +1,6 @@
 package be.jatra.android.util;
 
-public class GlobalConstants {
+public final class GlobalConstants {
     /***
      * Use API_OUTPUT_STATUS_CODE and API_OUTPUT_STATUS_LINE
      ***/
