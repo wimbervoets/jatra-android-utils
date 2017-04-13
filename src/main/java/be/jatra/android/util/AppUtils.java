@@ -30,7 +30,7 @@ public final class AppUtils {
             final PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             final String name = packageInfo.versionName;
             final int code = packageInfo.versionCode;
-            version = new Version(name, code, callback.getCodeName());
+            version = new Version(name, null, code, callback.getCodeName());
         } catch (final PackageManager.NameNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage());
         }
