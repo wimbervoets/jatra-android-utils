@@ -46,7 +46,7 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.14'
 
     //utilities
-    compile 'org.projectlombok:lombok:1.16.8'
+    compile 'org.projectlombok:lombok:1.16.16'
 
     //unit testing
     testCompile 'junit:junit:4.12'
