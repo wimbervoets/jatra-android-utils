@@ -43,7 +43,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:9.8.0'
 
     //logging
-    compile 'org.slf4j:slf4j-android:1.7.14'
+    compile 'org.slf4j:slf4j-android:1.7.25'
 
     //utilities
     compile 'org.projectlombok:lombok:1.16.16'
