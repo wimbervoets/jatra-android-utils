@@ -113,12 +113,12 @@
     <orderEntry type="library" exported="" name="support-core-ui-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.7.25" level="project" />
     <orderEntry type="library" exported="" name="firebase-iid-9.8.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="objenesis-2.5" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="powermock-api-support-1.6.4" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="objenesis-2.5" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="mockito-core-1.10.19" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="support-fragment-25.3.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="objenesis-2.1" level="project" />
+    <orderEntry type="library" exported="" name="support-fragment-25.3.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="powermock-core-1.6.4" level="project" />
     <orderEntry type="library" exported="" name="slf4j-android-1.7.25" level="project" />
     <orderEntry type="library" exported="" name="play-services-analytics-9.8.0" level="project" />
@@ -131,8 +131,8 @@
     <orderEntry type="library" exported="" name="support-media-compat-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-9.8.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
-    <orderEntry type="library" exported="" name="play-services-analytics-impl-9.8.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="powermock-module-junit4-1.6.4" level="project" />
+    <orderEntry type="library" exported="" name="play-services-analytics-impl-9.8.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="animated-vector-drawable-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-25.3.0" level="project" />
